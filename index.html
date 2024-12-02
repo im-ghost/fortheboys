@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards App</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/flashcards.css">
+  <link rel="stylesheet" href="css/test.css">
+  <link rel="stylesheet" href="css/grades.css">
+</head>
+<body>
+  <!-- Authentication Section -->
+  <section id="authSection" class="section">
+    <h3>User Authentication</h3>
+    <form id="authForm">
+      <label for="username">Name</label>
+      <input type="text" id="username" placeholder="Enter your name">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password">
+      <button id="login" type="button">Log In</button>
+      <button id="signup" type="button">Sign Up</button>
+    </form>
+  </section>
+
+  <!-- Application Sections -->
+  <main id="sections" style="display: none;" class="main">
+    <!-- Section 1: Flashcards -->
+    <section id="section1" class="section">
+      <h3>View Flashcards</h3>
+      <select id="courseSelector" class="styled-select"></select>
+      <select id="topicSelector" class="styled-select" disabled></select>
+      <div id="flashcardsList" class="flashcardscontainers"></div>
+    </section>
+<!-- Section 2: Add Flashcards -->
+<section id="section2" class="section">
+  <h3>Add a Flashcard</h3>
+  <div class="form">
+    <!-- Course Selector -->
+    <label for="course">Select Course</label>
+    <select id="course" class="styled-select">
+      <option disabled selected>Select a course</option>
+    </select>
+    <button id="createCourseButton" class="styled-button">Create Course</button>
+
+    <!-- Topic Selector -->
+    <label for="topic">Select Topic</label>
+    <select id="topic" class="styled-select">
+      <option>Select a topic</option>
+      <option value="add-new">Add New Topic</option>
+    </select>
+    <input id="newTopic" type="text" placeholder="Enter new topic" style="display: none;">
+
+    <!-- Flashcard Details -->
+    <label for="casename">Case Name/Section</label>
+    <input id="casename" type="text" placeholder="Enter case name/section" class="styled-input">
+    
+    <label for="principle">Principle</label>
+    <input id="principle" type="text" placeholder="Enter principle" class="styled-input">
+    
+    <!-- Save Flashcard Button -->
+    <button id="saveFlashcard" class="styled-button">Save Flashcard</button>
+  </div>
+</section>
+
+
+    <!-- Section 3: Test --><section id="section3" class="section">
+  <h3>Take a Test</h3>
+  <select id="courseSelectorForTest" class="styled-select">
+    <option disabled selected>Select a course</option>
+  </select>
+  <select id="topicSelectorForTest" class="styled-select" disabled>
+    <option disabled selected>Select a topic</option>
+  </select>
+  <div id="testContainer"></div>
+</section>
+
+    
+
+    <!-- Section 4: Grades -->
+    <section id="section4" class="section">
+      <h3>Your Grades</h3>
+      <div id="gradesContainer"></div>
+    </section>
+  </main>
+
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/data.js"></script>
+  <!--<script type="module" src="js/courses.js"></script>-->
+  <script type="module" src="js/flashcards.js"></script>
+  <script type="module" src="js/test.js"></script>
+  <script type="module" src="js/grades.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
