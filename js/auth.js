@@ -1,7 +1,6 @@
 // auth.js - Handles user authentication
 
 export const loginUser = (username, password) => {
-  console.log("login")
   const users = JSON.parse(localStorage.getItem('users')) || {};
   if (users[username] && users[username].password === password) {
     localStorage.setItem('currentUser', username);

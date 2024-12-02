@@ -1,12 +1,35 @@
 // main.js - Handles interactions for viewing and managing courses, topics, and flashcards
 
-import { loadUserDashboard } from './auth.js';
+import {
+  loadUserDashboard,
+  loginUser,
+  signupUser
+} from './auth.js';
 import { displayFlashcards } from './flashcards.js';
 import { generateTest } from './test.js';
 import { getCourses, getTopics, createCourse, addTopic, saveFlashcard } from './data.js';
-
-  
+console.log("ja")
+  localStorage.clear();
 document.addEventListener('DOMContentLoaded', () => {
+  let username = document.getElementById("username")
+  let loginBtn = document.getElementById("login");
+  let signupBtn = document.getElementById("signup");
+  let password = document.getElementById("password");
+  console.log(password)
+  loginBtn.addEventListener("click",()=>{
+    if(loginUser(username.value, password.value)){
+      loadUserDashboard()
+    }else{
+      alert("wrong credentials ")
+    }
+  })
+  signupBtn.addEventListener("click",()=>{
+    if(signupUser(username.value, password.value)){
+      loadUserDashboard()
+    }else{
+      alert("User already exist")
+    }
+  })
   loadUserDashboard();
   const courseSelector = document.getElementById('courseSelector'); // For viewing flashcards
   const topicSelector = document.getElementById('topicSelector');   // For viewing flashcards
