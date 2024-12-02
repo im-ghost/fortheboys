@@ -9,7 +9,7 @@ import { displayFlashcards } from './flashcards.js';
 import { generateTest } from './test.js';
 import { getCourses, getTopics, createCourse, addTopic, saveFlashcard } from './data.js';
 console.log("ja")
-  localStorage.clear();
+//ocalStorage.clear();
 document.addEventListener('DOMContentLoaded', () => {
   let username = document.getElementById("username")
   let loginBtn = document.getElementById("login");
