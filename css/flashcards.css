@@ -1,0 +1,75 @@
+/* Flashcards Container */
+.flashcardscontainers {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  width: calc(100vw -2.1rem);
+  height: 40vh;
+  margin: 1rem;
+}
+
+/* Flashcard Styling */
+.flashcard {
+  flex: 0 0 50%; /* 2 cards per row */
+  height: 90%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  perspective: 1000px; /* Enable 3D effect */
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  transition: transform 0.5s ease-in-out; /* Smooth transition for flip effect */
+}
+
+/* Flashcard inner container for the flip effect */
+.flashcard-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+}
+
+/* Flip the card when the active class is added */
+.flashcard.active .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+/* Front side of the card */
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Hide the back side when flipped */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  /* Allow text to break if it's too long */
+  word-wrap: break-word; /* Allows long words to break into the next line */
+  overflow-wrap: break-word; /* For newer browsers */
+  word-break: break-word; /* For edge cases where words might overflow */
+  hyphens: auto; /* Optional: Adds hyphenation support where applicable */
+}
+
+/* Flashcard front */
+.flashcard-front {
+  background: linear-gradient(135deg, #6a11cb, #2475fc);
+  color: #fff;
+}
+
+/* Flashcard back */
+.flashcard-back {
+  background: linear-gradient(135deg, #ff6a6a, #ff9472);
+  color: #fff;
+  transform: rotateY(180deg); /* Initially hide the back side */
+}

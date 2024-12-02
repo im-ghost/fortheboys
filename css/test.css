@@ -1,0 +1,97 @@
+/* Overall Container Styling for Test */
+#testContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;  /* Space between questions */
+  padding: 1rem;
+  max-height: calc(100vh - 80px); /* Ensure content doesn't overflow the screen */
+  overflow-y: auto;  /* Enable vertical scrolling for the container */
+}
+
+/* Each Question Card Styling */
+.question-container {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3); /* Light border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow to create card effect */
+  transition: background-color 0.3s, border-color 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.question-container.correct {
+  border-color: green;
+  background-color: rgba(0, 128, 0, 0.1);
+}
+
+.question-container.incorrect {
+  border-color: red;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* Label Styling for Options */
+label {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Correct Answer Styling */
+label.correct {
+  background-color: green;
+  color: white;
+}
+
+/* Incorrect Answer Styling */
+label.incorrect {
+  background-color: red;
+  color: white;
+}
+
+/* Input (Radio Buttons) and Text Alignment */
+input[type="radio"] {
+  margin-right: 10px;  /* Space between radio button and label */
+}
+
+/* Submit Button Styling */
+.styled-button {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: center; /* Center align the button */
+  margin-top: 1rem;
+}
+
+/* Hover and Active Button Effects */
+.styled-button:hover {
+  background: linear-gradient(135deg, #2575fc, #6a11cb);
+  transform: scale(1.05);
+}
+
+.styled-button:active {
+  transform: scale(0.95);
+}
+
+/* Ensure the Submit Button is visible */
+#submitTest {
+  margin-top: 1.5rem;
+}
+
+/* Question Text Styling */
+.question-container p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}

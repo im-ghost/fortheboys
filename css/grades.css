@@ -1,0 +1,12 @@
+/* Grades Container */
+#gradesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.grade-card {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

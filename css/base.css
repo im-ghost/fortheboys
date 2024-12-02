@@ -1,0 +1,96 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #fff;
+  height: 100%;
+  overflow-y: scroll; /* Disable horizontal overflow */
+}
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Main Content (Sections) */
+main {
+  display: flex;
+  flex-direction: row; /* Arrange sections vertically */
+  width: 100vw;
+  height: 100vh; /* Full viewport height */
+  scroll-snap-type: x mandatory; /* Snap behavior for vertical scroll */
+  overflow-y: scroll; /* Enable vertical scrolling */
+}
+
+.section {
+  flex: 0 0 100vw; /* Each section takes up 100% of the viewport height */
+  scroll-snap-align: start; /* Ensures sections align at the top */
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow: scroll;
+}
+/* Form container styling */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+}
+
+/* Labels for inputs */
+label {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  color: #fff;
+}
+
+/* General input and select styles */
+input, select, button {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+  border: 2px solid rgba(255, 255, 255, 0.3); /* Light border */
+  color: #fff;
+}
+
+/* Focus effect for inputs and selects */
+input:focus, select:focus, button:focus {
+  outline: none;
+  border-color: #2575fc; /* Blue border on focus */
+  background-color: rgba(255, 255, 255, 0.3); /* Slightly darker background */
+}
+
+/* Placeholder styling */
+input::placeholder, select::placeholder {
+  color: rgba(255, 255, 255, 0.5); /* Lighter text for placeholder */
+}
+
+/* Button Styles */
+button {
+  border: none;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #2575fc, #6a11cb); /* Hover effect */
+}
