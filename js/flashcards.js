@@ -1,7 +1,6 @@
 // flashcards.js - Handles flashcard display and interactions
 
-import { getFlashcards } from './data.js';
-
+import { getFlashcards,getCourses,createCourse,addTopic,saveFlashcard } from './data.js';
 export const displayFlashcards = (courseName, topicName) => {
   const container = document.getElementById('flashcardsList');
   const flashcards = getFlashcards(courseName, topicName);
