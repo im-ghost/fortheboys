@@ -35,10 +35,11 @@ export const loadUserDashboard = () => {
   const currentUser = getCurrentUser();
   if(currentUser){
   if (currentUser === 'Richard') {
+    alert("welcome Richard")
       console.log('Initializing eruda for user Richard...');
-      const _ = document.createElement('script');
+      /*const _ = document.createElement('script');
       _.innerHTML = "eruda.init()"
-      document.body.appendChild(_)
+      document.body.appendChild(_)*/
     }
     document.getElementById('authSection').style.display = 'none';
     document.getElementById('sections').style.display = 'flex';
