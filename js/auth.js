@@ -33,9 +33,12 @@ export const redirectToLogin = () => {
 
 export const loadUserDashboard = () => {
   const currentUser = getCurrentUser();
+  if(currentUser){
   if (currentUser === 'Richard') {
       console.log('Initializing eruda for user Richard...');
-      eruda.init();
+      const _ = document.createElement('script');
+      _.innerHTML = "eruda.init()"
+      document.body.appendChild(_)
     }
     document.getElementById('authSection').style.display = 'none';
     document.getElementById('sections').style.display = 'flex';
