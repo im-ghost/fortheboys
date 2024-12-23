@@ -122,9 +122,11 @@ export const loadFlashcardsByTopicOrSubject = (jsonData) => {
     if (finalTopicName) {
       addTopic(finalCourseName, finalTopicName);
     }
-
+ console.log(finalTopicName)
+ console.log(finalCourseName)
     flashcards.forEach((fc) => {
       saveFlashcard(finalCourseName, finalTopicName || fc.topicName, fc);
+      console.log(fc)
     });
 
     alert(`Flashcards loaded successfully into "${finalTopicName || finalCourseName}".`);
