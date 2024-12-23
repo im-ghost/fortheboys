@@ -73,3 +73,8 @@
   color: #fff;
   transform: rotateY(180deg); /* Initially hide the back side */
 }
+#flashcardsActions {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
