@@ -17,6 +17,7 @@ export const signupUser = (username, password) => {
   }
   users[username] = { password, courses: {}, grades: {} };
   localStorage.setItem('users', JSON.stringify(users));
+   localStorage.setItem('currentUser', username);
   console.log(users)
   return true;
 };
@@ -32,7 +33,10 @@ export const redirectToLogin = () => {
 
 export const loadUserDashboard = () => {
   const currentUser = getCurrentUser();
-  if (currentUser) {
+  if (currentUser === 'Richard') {
+      console.log('Initializing eruda for user Richard...');
+      eruda.init();
+    }
     document.getElementById('authSection').style.display = 'none';
     document.getElementById('sections').style.display = 'flex';
   } else {
