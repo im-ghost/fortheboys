@@ -1,4 +1,4 @@
-const CACHE_NAME = 'flashcards-app-cache-v1';
+const CACHE_NAME = 'flashcards-app-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -49,25 +49,4 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
-});
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  // You can now show your custom install prompt
-  // deferredPrompt.prompt();
-});
-
-// Trigger install
-installButton.addEventListener('click', (e) => {
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then((choiceResult) => {
-    if (choiceResult.outcome === 'accepted') {
-      console.log('User accepted the A2HS prompt');
-    } else {
-      console.log('User dismissed the A2HS prompt');
-    }
-    deferredPrompt = null;
-  });
 });
