@@ -245,3 +245,24 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // You can now show your custom install prompt (e.g., a button).
+  // Show install button
+  installButton.style.display = 'block'; // Ensure you show an install button
+
+  installButton.addEventListener('click', (e) => {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
+});
