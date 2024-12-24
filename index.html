@@ -40,7 +40,8 @@
   <link rel="stylesheet" href="css/flashcards.css">
   <link rel="stylesheet" href="css/test.css">
   <link rel="stylesheet" href="css/grades.css">
-  <!--script src="js/eruda.js"></script-->
+  <script src="js/eruda.js"></script>
+ 
 </head>
 <body>
   <!-- Authentication Section -->
@@ -117,17 +118,37 @@
   <select id="topicSelectorForTest" class="styled-select" disabled>
     <option disabled selected>Select a topic</option>
   </select>
+  <!-- Input for Number of Questions -->
+  <label for="numQuestions">Number of Questions:</label>
+  <input id="numQuestions" type="number" min="1" placeholder="Enter number of questions" class="styled-input">
+  <!-- Timer -->
+  <div id="timerContainer">
+    <p id="timerDisplay">Time Left: 00:00</p>
+  </div>
+  
   <div id="testContainer"></div>
 </section>
 
     
 
     <!-- Section 4: Grades -->
-    <section id="section4" class="section">
-      <h3>Your Grades</h3>
-      <div id="gradesContainer"></div>
-    </section>
+ <section id="section4" class="section">
+  <h3>Your Grades</h3>
+  <div id="gradesContainer"></div>
+  <div id="progressAdvice">
+    <h4>Progress & Advice</h4>
+    <canvas id="progressChart" width="400" height="200"></canvas>
+    <div id="performanceChartContainer">
+  <h4>Performance Breakdown</h4>
+  <canvas id="performanceChart" width="400" height="200"></canvas>
+</div>
+    <p id="adviceText"></p>
+  </div>
+</section>
+
   </main>
+  <script src="./js/chart.js"></script>
   <script type="module" src="./js/main.js"></script>
+   <script>eruda.init()</script>
 </body>
 </html>
