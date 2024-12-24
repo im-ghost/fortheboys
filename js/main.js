@@ -7,7 +7,7 @@ import {
 } from './auth.js';
 import { displayFlashcards } from './flashcards.js';
 import { generateTest } from './test.js';
-import { displayGrades,  displayProgressAndAdvice } from './grades.js';
+import { displayGrades,  displayProgressAndAdvice,createCourseDropdown} from './grades.js';
 
  
 
@@ -16,7 +16,7 @@ import { displayGrades,  displayProgressAndAdvice } from './grades.js';
 
 import { getCourses, getTopics, createCourse, addTopic, saveFlashcard } from './data.js';
 console.log("ja")
- localStorage.clear();
+// localStorage.clear();
 document.addEventListener('DOMContentLoaded', () => {
   let username = document.getElementById("username")
   let loginBtn = document.getElementById("login");
@@ -228,8 +228,9 @@ const courseSelectorForTest = document.getElementById('courseSelectorForTest');
   // Initial population of course dropdowns
   populateCourses();
   
-  displayGrades();
-  displayProgressAndAdvice()
+  /*displayGrades();
+  displayProgressAndAdvice()*/
+  createCourseDropdown();
 
 });
 if ('serviceWorker' in navigator) {
