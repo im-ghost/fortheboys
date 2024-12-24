@@ -74,18 +74,31 @@ export const getFlashcards = (courseName, topicName = null) => {
   // If no topic is specified, return all flashcards across all topics
   return Object.values(course.topics || {}).flat();
 };
-
 export const saveGrade = (courseName, topicName, score, total) => {
-  const userData = getUserData();
+  const userData = getUserData(); // Get current user data
   if (!userData.grades) {
     userData.grades = {};
   }
+
   const gradeKey = `${courseName}-${topicName}`;
-  userData.grades[gradeKey] = { score, total };
-  updateUserData(userData);
+
+  // Check if an array of grades exists for the course-topic combination
+  if (!userData.grades[gradeKey]) {
+    userData.grades[gradeKey] = [];
+  }
+
+  // Push the new grade to the array of grades for that course-topic combination
+  userData.grades[gradeKey].push({
+    score,
+    total,
+    date: Date.now(),
+    attempts: userData.grades[gradeKey].length + 1, // Increment attempts count
+  });
+
+  updateUserData(userData); // Save updated user data
 };
 
 export const getGrades = () => {
   const userData = getUserData();
-  return userData.grades || {};
+  return userData.grades || {}; // Return all grades or an empty object
 };

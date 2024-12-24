@@ -10,7 +10,6 @@ export const loginUser = (username, password) => {
 };
 
 export const signupUser = (username, password) => {
-  console.log("signup")
   const users = JSON.parse(localStorage.getItem('users')) || {};
   if (users[username]) {
     return false; // User already exists

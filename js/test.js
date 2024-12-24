@@ -3,47 +3,65 @@
 import { getFlashcards, saveGrade } from './data.js';
 import { getCurrentUser } from './auth.js';
 
+import { displayGrades, displayPerformanceChart, displayProgressAndAdvice } from './grades.js';
+
+
+
 export const generateTest = (courseName, topicName) => {
-  const flashcards = topicName
-    ? getFlashcards(courseName, topicName)
-    : Object.values(getFlashcards(courseName)).flat();
+  // Validate topic selection
+  if (!topicName) {
+    alert('Please select a topic before starting the test.');
+    return;
+  }
+
+  const flashcards = getFlashcards(courseName, topicName);
 
   if (!flashcards || flashcards.length === 0) {
-    alert('No flashcards available for this selection.');
+    alert('No flashcards available for this topic.');
     return;
-  }const container = document.getElementById('testContainer');
+  }
+
+  const numQuestionsInput = document.getElementById('numQuestions');
+  let numQuestions = parseInt(numQuestionsInput.value, 10);
+
+  if (isNaN(numQuestions) || numQuestions <= 0) {
+    alert('Please enter a valid number of questions.');
+    return;
+  }
+
+  if (numQuestions > flashcards.length) {
+    alert(`Only ${flashcards.length} flashcards are available. Generating a test with all available questions.`);
+    numQuestions = flashcards.length;
+  }
+
+  const container = document.getElementById('testContainer');
   container.innerHTML = ''; // Clear the container
 
-  // Shuffle the flashcards for random order
-  const shuffledFlashcards = shuffle(flashcards);
- console.log(shuffledFlashcards)
+  const shuffledFlashcards = shuffle(flashcards).slice(0, numQuestions);
+
   shuffledFlashcards.forEach((fc, index) => {
-    const isCaseQuestion = Math.random() > 0.5; // Randomly decide if the question is about case or principle
+    const isCaseQuestion = Math.random() > 0.5;
 
     let questionText, correctAnswer, options;
 
     if (isCaseQuestion) {
-      // Ask for principle of a case
-      questionText = `What is the principle of "${fc.caseName}"?_`;
+      questionText = `What is the principle of "${fc.caseName}"?`;
       correctAnswer = fc.principle;
       options = getPrinciplesFromOtherFlashcards(flashcards, fc.principle);
     } else {
-      // Ask for case of a principle
       questionText = `Which case corresponds to the principle: "${fc.principle}"?`;
       correctAnswer = fc.caseName;
       options = getCasesFromOtherFlashcards(flashcards, fc.caseName);
     }
 
-    // Shuffle the options to randomize their order
     options = shuffle([correctAnswer, ...options]);
 
-    // Create HTML for the question
     const questionDiv = document.createElement('div');
-    questionDiv.classList.add('question-container'); // Add a container for the question
+    questionDiv.classList.add('question-container');
 
     questionDiv.innerHTML = `
       <p>${questionText}</p>
-      ${options.map((option, i) => `
+      ${options.map(option => `
         <label>
           <input type="radio" name="question${index}" value="${option}">
           ${option}
@@ -52,19 +70,73 @@ export const generateTest = (courseName, topicName) => {
     `;
     container.appendChild(questionDiv);
   });
-  const submitTestBtn = document.createElement("button")
-  submitTestBtn.setAttribute("id","submitTest");
-  submitTestBtn.classList.add("button");
-  container.appendChild(submitTestBtn)
 
-  // Add the submit button functionality
+  const submitTestBtn = document.createElement('button');
+  submitTestBtn.setAttribute('id', 'submitTest');
+  submitTestBtn.classList.add('button');
+  submitTestBtn.textContent = 'Submit Test';
+  container.appendChild(submitTestBtn);
+
   document.getElementById('submitTest').addEventListener('click', () => {
-    submitTest(container, shuffledFlashcards);
+    stopTimer(); // Stop the timer
+    submitTest(container, shuffledFlashcards, courseName, topicName);
+  });
+
+  // Start the timer based on the number of questions
+  startTimer(numQuestions, () => {
+    alert('Time is up! Submitting the test automatically.');
+    submitTest(container, shuffledFlashcards, courseName, topicName);
   });
 };
 
+
+let timerInterval;
+
+const startTimer = (numQuestions, onTimeUp) => {
+  const timerDisplay = document.getElementById('timerDisplay');
+  const totalTime = numQuestions * 3; // 3 seconds per question
+  let timeRemaining = totalTime;
+
+  const updateTimerDisplay = () => {
+    const seconds = timeRemaining;
+    timerDisplay.textContent = `Time Left: ${String(seconds).padStart(2, '0')}s`;
+
+    // Change color and apply animation when 5 seconds remain
+    if (seconds <= 5) {
+      timerDisplay.style.color = 'red';
+      timerDisplay.style.animation = 'zoom 1s infinite';
+    } else {
+      timerDisplay.style.color = 'black'; // Default color
+      timerDisplay.style.animation = 'none';
+    }
+  };
+
+  updateTimerDisplay(); // Initialize display
+
+  timerInterval = setInterval(() => {
+    timeRemaining -= 1;
+
+    if (timeRemaining <= 0) {
+      clearInterval(timerInterval);
+      timerDisplay.textContent = 'Time Up!';
+      timerDisplay.style.color = 'red';
+      timerDisplay.style.animation = 'none';
+      onTimeUp(); // Call the callback function
+    } else {
+      updateTimerDisplay();
+    }
+  }, 1000);
+};
+
+const stopTimer = () => {
+  clearInterval(timerInterval);
+};
+
+
+
 // Helper function to shuffle an array
 const shuffle = (array) => {
+  console.log(array)
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]]; // Swap elements
@@ -84,12 +156,11 @@ const getPrinciplesFromOtherFlashcards = (flashcards, correctPrinciple) => {
 const getCasesFromOtherFlashcards = (flashcards, correctCase) => {
   const otherCases = flashcards
     .filter(fc => fc.caseName !== correctCase) // Exclude the correct case
-    .map(fc => fc.caseName);
+    .map(fc => fc.caseName)
+
   return shuffle(otherCases).slice(0, 3); // Return 3 random cases
 };
-
-// Submit the test, check answers and calculate score
-const submitTest = (container, shuffledFlashcards) => {
+const submitTest = (container, shuffledFlashcards, courseName, topicName) => {
   let score = 0;
   const totalQuestions = shuffledFlashcards.length;
 
@@ -100,21 +171,17 @@ const submitTest = (container, shuffledFlashcards) => {
     const selectedOption = questionDiv.querySelector(`input[name="${questionName}"]:checked`);
     const labels = questionDiv.querySelectorAll('label');
 
-    // Determine if the question was asking for the principle or the case
-    console.log(questionDiv.querySelector("p").textContent.includes("principle"))
     const isCaseQuestion = questionDiv.querySelector('p').textContent.includes('_');
     const correctAnswer = isCaseQuestion ? flashcard.principle : flashcard.caseName;
-  console.log(correctAnswer)
+
     if (selectedOption) {
       const selectedValue = selectedOption.value;
 
-      // If the selected answer is correct
       if (selectedValue === correctAnswer) {
         score++;
         questionDiv.style.border = '3px solid green';
-        questionDiv.style.backgroundColor = 'rgba(0, 128, 0, 0.1)'; // Light green background
+        questionDiv.style.backgroundColor = 'rgba(0, 128, 0, 0.1)';
 
-        // Highlight the correct label in green
         labels.forEach((label) => {
           if (label.querySelector('input').value === correctAnswer) {
             label.style.backgroundColor = 'green';
@@ -122,11 +189,9 @@ const submitTest = (container, shuffledFlashcards) => {
           }
         });
       } else {
-        // If the selected answer is incorrect
         questionDiv.style.border = '3px solid red';
-        questionDiv.style.backgroundColor = 'rgba(255, 0, 0, 0.1)'; // Light red background
+        questionDiv.style.backgroundColor = 'rgba(255, 0, 0, 0.1)';
 
-        // Highlight the correct option in green
         labels.forEach((label) => {
           const labelInput = label.querySelector('input');
           if (labelInput.value === correctAnswer) {
@@ -140,11 +205,9 @@ const submitTest = (container, shuffledFlashcards) => {
         });
       }
     } else {
-      // If no option is selected, only highlight the correct answer
       questionDiv.style.border = '3px solid orange';
-      questionDiv.style.backgroundColor = 'rgba(255, 165, 0, 0.1)'; // Light orange background
+      questionDiv.style.backgroundColor = 'rgba(255, 165, 0, 0.1)';
 
-      // Highlight the correct label in green
       labels.forEach((label) => {
         if (label.querySelector('input').value === correctAnswer) {
           label.style.backgroundColor = 'green';
@@ -154,6 +217,15 @@ const submitTest = (container, shuffledFlashcards) => {
     }
   });
 
-  // Show score in an alert
+  // Save the grade only if topicName is valid
+  if (courseName && topicName) {
+    saveGrade(courseName, topicName, score, totalQuestions);
+  }
+
+  displayGrades();
+  displayPerformanceChart(score,totalQuestions);
+  displayProgressAndAdvice()
   alert(`You scored ${score} out of ${totalQuestions}`);
 };
+
+// Submit the test, check answers and calculate score

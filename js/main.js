@@ -7,15 +7,21 @@ import {
 } from './auth.js';
 import { displayFlashcards } from './flashcards.js';
 import { generateTest } from './test.js';
+import { displayGrades,  displayProgressAndAdvice } from './grades.js';
+
+ 
+
+
+
+
 import { getCourses, getTopics, createCourse, addTopic, saveFlashcard } from './data.js';
 console.log("ja")
- // localStorage.clear();
+ localStorage.clear();
 document.addEventListener('DOMContentLoaded', () => {
   let username = document.getElementById("username")
   let loginBtn = document.getElementById("login");
   let signupBtn = document.getElementById("signup");
   let password = document.getElementById("password");
-  console.log(password)
   loginBtn.addEventListener("click",()=>{
     if(loginUser(username.value, password.value)){
       loadUserDashboard()
@@ -221,4 +227,20 @@ const courseSelectorForTest = document.getElementById('courseSelectorForTest');
 
   // Initial population of course dropdowns
   populateCourses();
+  
+  displayGrades();
+  displayProgressAndAdvice()
+
 });
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.log('Service Worker registration failed:', error);
+      });
+  });
+}
