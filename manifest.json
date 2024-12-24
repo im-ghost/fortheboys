@@ -20,6 +20,6 @@
     "lang":"en-GB",
     "name":"Justfortheboys",
     "short_name":"Flashcards ",
-    "start_url":"https://justfortheboys.netlify.app/",
-    "scope":"https://justfortheboys.netlify.app/"
+    "start_url":"/",
+    "scope":"/"
 }
