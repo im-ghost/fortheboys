@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A flashcard app just for the boys">
     <meta name="image" content="https://justfortheboys.netlify.app/image.jpg">
@@ -42,7 +42,6 @@
   <link rel="stylesheet" href="css/test.css">
   <link rel="stylesheet" href="css/grades.css">
   <script src="js/eruda.js"></script>
- 
 </head>
 <body>
   <!-- Authentication Section -->
@@ -82,32 +81,49 @@
 <!-- Section 2: Add Flashcards -->
 <section id="section2" class="section">
   <h3>Add a Flashcard</h3>
-  <div class="form">
-    <!-- Course Selector -->
-    <label for="course">Select Course</label>
-    <select id="course" class="styled-select">
-      <option disabled selected>Select a course</option>
-    </select>
-    <button id="createCourseButton" class="styled-button">Create Course</button>
+ <div class="form">
+  <!-- Flashcard Form -->
+  <h2>Create Flashcards</h2>
+  
+  <!-- Select Course -->
+  <label for="course">Select Course:</label>
+  <select id="course">
+    <option disabled selected>Select a course</option>
+  </select>
+  <button id="createCourseButton" class="styled-button">Create New Course</button>
 
-    <!-- Topic Selector -->
-    <label for="topic">Select Topic</label>
-    <select id="topic" class="styled-select">
-      <option>Select a topic</option>
-      <option value="add-new">Add New Topic</option>
-    </select>
-    <input id="newTopic" type="text" placeholder="Enter new topic" style="display: none;">
+  <!-- Select Topic -->
+  <label for="topic">Select Topic:</label>
+  <select id="topic">
+    <option disabled selected>Select a topic</option>
+    <option value="add-new">Add New Topic</option>
+  </select>
+  <input id="newTopic" style="display:none;" placeholder="Enter new topic name" />
 
-    <!-- Flashcard Details -->
-    <label for="casename">Case Name/Section</label>
-    <input id="casename" type="text" placeholder="Enter case name/section" class="styled-input">
-    
-    <label for="principle">Principle</label>
-    <input id="principle" type="text" placeholder="Enter principle" class="styled-input">
-    
-    <!-- Save Flashcard Button -->
-    <button id="saveFlashcard" class="styled-button">Save Flashcard</button>
-  </div>
+  <!-- Flashcard Fields -->
+  <label for="casename">Case Name:</label>
+  <input id="casename" placeholder="Enter case name" />
+  
+  <label for="principle">Principle:</label>
+  <input id="principle" placeholder="Enter principle" />
+  
+  <button id="saveFlashcard" class="styled-button">Save Flashcard</button>
+
+  <!-- Bulk Flashcard Entry -->
+  <h3>Bulk Flashcard Entry</h3>
+  <textarea id="bulkFlashcards" placeholder="Enter flashcards in format 'Case Name | Principle', one per line"></textarea>
+  <button id="saveBulkFlashcards" class="styled-button">Save Bulk Flashcards</button>
+
+  <!-- Bulk Flashcard Across Topics -->
+  <h3>Bulk Flashcard Entry Across Topics</h3>
+  <textarea id="bulkFlashcardsByTopic" placeholder="Enter flashcards in format 'Topic | Case Name | Principle', one per line"></textarea>
+  <button id="saveBulkByTopic" class="styled-button">Save Flashcards By Topic</button>
+
+  <!-- File Import -->
+  <h3>Import Flashcards from File</h3>
+  <input type="file" id="importFlashcards" accept=".csv, .json" />
+</div>
+
 </section>
 
 
@@ -121,12 +137,31 @@
   </select>
   <!-- Input for Number of Questions -->
   <label for="numQuestions">Number of Questions:</label>
-  <input id="numQuestions" type="number" min="1" placeholder="Enter number of questions" class="styled-input">
+<!-- Number of Questions Inpu-- Number of Questions -->
+      <label for="numQuestions">Number of Questions:</label>
+      <input  id="numQuestions" min="1" type="range" value="1" step="1">
+      <span id="numQuestionsLabel">10</span>
+      
+      <!-- Difficulty Slider -->
+      <label for="difficulty">Difficulty:</label>
+      <input type="range" id="difficulty" min="1" max="10" value="5" step="1" oninput="updateDifficultyLabel(this.value)">
+      <span id="difficultyValue">5</span>
+      
+  
   <!-- Timer -->
   <div id="timerContainer">
     <p id="timerDisplay">Time Left: 00:00</p>
   </div>
-  
+  <!-- Difficulty Level -->
+
+<button id="generateTestButton" class="styled-button">Generate Test</button>
+<div id="feedback-container" class="feedback-container">
+  <canvas id="feedbackCanvas"></canvas>
+  <div id="retry-button-container">
+    <button class="retry-button" onclick="retryTest()">Try Again</button>
+  </div>
+</div>
+
   <div id="testContainer"></div>
 </section>
 
@@ -152,7 +187,8 @@
 
   </main>
   <script src="./js/chart.js"></script>
-  <script type="module" src="./js/main.js"></script>
-   <script>eruda.init()</script>
+   <script>eruda.init();</script>
+  
+ <script type="module" src="./js/main.js"></script>
 </body>
 </html>
