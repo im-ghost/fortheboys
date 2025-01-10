@@ -1,5 +1,5 @@
+console.log("main.js loaded");
 // main.js - Handles interactions for viewing and managing courses, topics, and flashcards
-
 import {
   loadUserDashboard,
   loginUser,
@@ -7,22 +7,20 @@ import {
 } from './auth.js';
 import { displayFlashcards } from './flashcards.js';
 import { generateTest } from './test.js';
+
 import { displayGrades,  displayProgressAndAdvice,createCourseDropdown} from './grades.js';
 
- 
-
-
-
-
 import { getCourses, getTopics, createCourse, addTopic, saveFlashcard } from './data.js';
+
 console.log("ja")
-// localStorage.clear();
+//localStorage.clear();
 document.addEventListener('DOMContentLoaded', () => {
   let username = document.getElementById("username")
   let loginBtn = document.getElementById("login");
   let signupBtn = document.getElementById("signup");
   let password = document.getElementById("password");
   loginBtn.addEventListener("click",()=>{
+    console.log("lbtn")
     if(loginUser(username.value, password.value)){
       loadUserDashboard()
     }else{
@@ -50,17 +48,23 @@ const courseSelectorForTest = document.getElementById('courseSelectorForTest');
 
   // Populate the courses dropdown in the test section
   const populateCoursesForTest = () => {
-    const courses = getCourses();
+     const courses = getCourses();
+    // Populate "View Flashcards" course selector
     courseSelectorForTest.innerHTML = '<option disabled selected>Select a course</option>';
-    
+    //addCourseSelector.innerHTML = '<option disabled selected>Select a course</option>';
+
     if (courses.length === 0) {
-      courseSelectorForTest.innerHTML += '<option disabled>No courses available</option>';
+      courseSelector.innerHTML += '<option disabled>No courses available</option>';
+     // addCourseSelector.innerHTML += '<option disabled>No courses available</option>';
     } else {
       courses.forEach((course) => {
         const option = document.createElement('option');
         option.value = course;
         option.textContent = course;
         courseSelectorForTest.appendChild(option);
+
+        //const addOption = option.cloneNode(true);
+       // addCourseSelector.appendChild(addOption);
       });
     }
   };
@@ -68,20 +72,23 @@ const courseSelectorForTest = document.getElementById('courseSelectorForTest');
   // Populate topics dropdown when a course is selected
   const populateTopicsForTest = (course) => {
     const topics = getTopics(course);
-    topicSelectorForTest.innerHTML = '<option disabled selected>Select a topic (optional)</option>';
+    const targetSelector = topicSelectorForTest;
+    targetSelector.innerHTML = '<option disabled selected>Select a topic</option>';
+
+   
 
     if (topics.length === 0) {
-      topicSelectorForTest.innerHTML += '<option disabled>No topics available</option>';
+      targetSelector.innerHTML += '<option disabled>No topics available</option>';
     } else {
       topics.forEach((topic) => {
         const option = document.createElement('option');
         option.value = topic;
         option.textContent = topic;
-        topicSelectorForTest.appendChild(option);
+        targetSelector.appendChild(option);
       });
     }
 
-    topicSelectorForTest.disabled = false; // Enable topic selection if course is selected
+    targetSelector.disabled = false;
   };
 
   // Handle course selection in the test section
@@ -89,19 +96,6 @@ const courseSelectorForTest = document.getElementById('courseSelectorForTest');
     const selectedCourse = courseSelectorForTest.value;
     populateTopicsForTest(selectedCourse);  // Populate topics based on the selected course
     testContainer.innerHTML = '';  // Clear the previous test content when course changes
-  });
-
-  // Handle topic selection in the test section
-  topicSelectorForTest.addEventListener('change', () => {
-    const selectedCourse = courseSelectorForTest.value;
-    const selectedTopic = topicSelectorForTest.value;
-    generateTest(selectedCourse, selectedTopic); // Generate the test for the selected topic
-  });
-
-  // When no topic is selected, generate a test based on the entire course
-  courseSelectorForTest.addEventListener('change', () => {
-    const selectedCourse = courseSelectorForTest.value;
-    generateTest(selectedCourse, null); // Passing null means the test will be for the whole course
   });
 
   // Initial population of courses in the test section
@@ -220,7 +214,7 @@ const courseSelectorForTest = document.getElementById('courseSelectorForTest');
     document.getElementById('principle').value = '';
     newTopicInput.value = '';
     newTopicInput.style.display = 'none';
-    addTopicSelector.value = 'add-new';
+    addTopicSelector.value = selectedTopic;
 
     alert(`Flashcard added to "${selectedTopic}" in "${selectedCourse}".`);
   });
@@ -232,37 +226,4 @@ const courseSelectorForTest = document.getElementById('courseSelectorForTest');
   displayProgressAndAdvice()*/
   createCourseDropdown();
 
-});
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registered with scope:', registration.scope);
-      })
-      .catch((error) => {
-        console.log('Service Worker registration failed:', error);
-      });
-  });
-}
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  // You can now show your custom install prompt (e.g., a button).
-  // Show install button
-  installButton.style.display = 'block'; // Ensure you show an install button
-
-  installButton.addEventListener('click', (e) => {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-      deferredPrompt = null;
-    });
-  });
 });

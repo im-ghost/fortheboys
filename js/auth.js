@@ -1,6 +1,6 @@
 // auth.js - Handles user authentication
-
 export const loginUser = (username, password) => {
+  console.log("login")
   const users = JSON.parse(localStorage.getItem('users')) || {};
   if (users[username] && users[username].password === password) {
     localStorage.setItem('currentUser', username);
@@ -10,6 +10,7 @@ export const loginUser = (username, password) => {
 };
 
 export const signupUser = (username, password) => {
+  console.log("signup")
   const users = JSON.parse(localStorage.getItem('users')) || {};
   if (users[username]) {
     return false; // User already exists
@@ -33,14 +34,8 @@ export const redirectToLogin = () => {
 export const loadUserDashboard = () => {
   const currentUser = getCurrentUser();
   if(currentUser){
-  if (currentUser === 'Richard') {
-    alert("welcome Richard")
-      console.log('Initializing eruda for user Richard...');
-      /*const _ = document.createElement('script');
-      _.innerHTML = "eruda.init()"
-      document.body.appendChild(_)*/
-    }
     document.getElementById('authSection').style.display = 'none';
+    console.log(currentUser)
     document.getElementById('sections').style.display = 'flex';
   } else {
     redirectToLogin();
